@@ -1,24 +1,25 @@
 
-
 import SwiftUI
 import UIKit
 
 
 enum NumericInput {
     static func sanitize(_ raw: String) -> String {
-        var result = ""
+        var integerPart = ""
+        var fractionPart = ""
         var seenDot = false
         for character in raw {
             if character == "." || character == "," {
-                if !seenDot {
-                    result.append(".")
-                    seenDot = true
-                }
+                seenDot = true
             } else if character.isNumber {
-                result.append(character)
+                if seenDot {
+                    if fractionPart.count < 2 { fractionPart.append(character) }
+                } else if integerPart.count < 15 {
+                    integerPart.append(character)
+                }
             }
         }
-        return result
+        return seenDot ? integerPart + "." + fractionPart : integerPart
     }
 }
 
@@ -350,7 +351,7 @@ struct TransactionRowView: View {
                         .lineLimit(1)
                 }
             }
-            Spacer()
+            Spacer(minLength: 8)
             VStack(alignment: .trailing, spacing: 2) {
                 LiveNumberText(
                     value: transaction.type == .expense ? -transaction.amount : transaction.amount,
@@ -363,6 +364,7 @@ struct TransactionRowView: View {
                     .foregroundStyle(FinoraColor.textTertiary)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 8)
     }
 }

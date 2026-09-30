@@ -50,6 +50,8 @@ struct GoalsView: View {
                         subtitle: "Set a target, link a wallet (or leave it linked to all of them), and watch your progress grow automatically.",
                         buttonTitle: "New goal"
                     ) { tapAddGoal() }
+                        .padding(.horizontal, FinoraMetric.screenPadding)
+                        .padding(.top, 55)
                 }
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
@@ -94,7 +96,7 @@ struct GoalsView: View {
                     .font(FinoraFont.caption)
                     .foregroundStyle(FinoraColor.textSecondary)
                     .textCase(nil)
-                    .padding(.horizontal, FinoraMetric.screenPadding - 16) 
+                    .padding(.horizontal, FinoraMetric.screenPadding - 16)
                 }
                 
                 if !isReordering {
@@ -232,6 +234,9 @@ struct AddGoalView: View {
                 
                 Section("Goal name") {
                     TextField("e.g. New Car", text: $name)
+                        .onChange(of: name) { _, newValue in
+                            if newValue.count > 50 { name = String(newValue.prefix(50)) }
+                        }
                 }
                 
                 Section("Target amount") {

@@ -83,8 +83,7 @@ struct BudgetsContentView: View {
                             subtitle: "Set a monthly limit per category to see your progress here.",
                             buttonTitle: "New budget"
                         ) { tapAddBudget() }
-                            .padding()
-                            .padding(.top, 55)
+                            .padding(.top)
                     }
                 } else {
                     ForEach(thisMonthBudgets) { budget in

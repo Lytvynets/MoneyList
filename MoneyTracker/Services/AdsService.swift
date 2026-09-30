@@ -1,5 +1,4 @@
 
-
 import SwiftUI
 import GoogleMobileAds
 internal import Combine
@@ -13,13 +12,34 @@ enum AdsService {
 
 struct BannerAdView: View {
     @State private var adLoaded = false
+    @State private var containerWidth: CGFloat = 0
+
+    private var adSize: AdSize? {
+        guard containerWidth > 0 else { return nil }
+        return largeAnchoredAdaptiveBanner(width: containerWidth)
+    }
 
     var body: some View {
-        let adSize = largeAnchoredAdaptiveBanner(width: UIScreen.main.bounds.width - FinoraMetric.screenPadding * 2)
-        BannerViewRepresentable(adSize: adSize, adLoaded: $adLoaded)
-            .frame(width: adSize.size.width, height: adSize.size.height)
-            .opacity(adLoaded ? 1 : 0)
-            .frame(height: adLoaded ? adSize.size.height : 0)
+        Color.clear
+            .frame(maxWidth: .infinity)
+            .frame(height: 0)
+            .background(
+                GeometryReader { geo in
+                    Color.clear
+                        .onAppear { containerWidth = geo.size.width }
+                        .onChange(of: geo.size.width) { _, newValue in
+                            if newValue > 0 { containerWidth = newValue }
+                        }
+                }
+            )
+            .overlay {
+                if let adSize {
+                    BannerViewRepresentable(adSize: adSize, adLoaded: $adLoaded)
+                        .frame(width: adSize.size.width, height: adSize.size.height)
+                        .opacity(adLoaded ? 1 : 0)
+                }
+            }
+            .frame(height: (adLoaded ? adSize?.size.height : 0) ?? 0)
             .animation(.easeOut(duration: 0.25), value: adLoaded)
     }
 }

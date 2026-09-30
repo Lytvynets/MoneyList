@@ -1,4 +1,5 @@
 
+
 import SwiftUI
 import SwiftData
 
@@ -120,6 +121,9 @@ struct AddAccountView: View {
                     typePicker
                     styledField(title: "Account name") {
                         TextField("e.g. Cash,bank", text: $name)
+                            .onChange(of: name) { _, newValue in
+                                if newValue.count > 50 { name = String(newValue.prefix(50)) }
+                            }
                             .font(FinoraFont.body)
                             .foregroundStyle(FinoraColor.textPrimary)
                     }

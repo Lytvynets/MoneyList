@@ -1,5 +1,4 @@
 
-
 import SwiftUI
 import SwiftData
 import Charts
@@ -342,10 +341,7 @@ struct OverviewView: View {
                 }
                 AddAccountCard { tapAddAccount() }
             }
-            .padding(.trailing, FinoraMetric.screenPadding)
         }
-        .padding(.horizontal, -FinoraMetric.screenPadding)
-        .padding(.leading, FinoraMetric.screenPadding)
     }
     
     private var monthlyBudgetCard: some View {
@@ -363,6 +359,8 @@ struct OverviewView: View {
                 Text("Spent \(totalSpentThisMonth.formatted(.currency(code: currency))) out of \(totalBudgetLimit.formatted(.currency(code: currency)))")
                     .font(FinoraFont.caption)
                     .foregroundStyle(FinoraColor.textSecondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
                 
                 GeometryReader { geo in
                     let progress = SafeToSpendCalculator.progress(spent: totalSpentThisMonth, limit: totalBudgetLimit)

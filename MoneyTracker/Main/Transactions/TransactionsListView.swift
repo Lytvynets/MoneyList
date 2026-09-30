@@ -1,5 +1,4 @@
 
-
 import SwiftUI
 import SwiftData
 
@@ -46,6 +45,9 @@ struct TransactionsListView: View {
 
     var body: some View {
         NavigationStack {
+            
+            
+            
             VStack(spacing: 0) {
                 filterChips
 
@@ -60,9 +62,11 @@ struct TransactionsListView: View {
                                 subtitle: "Try a different filter, or add your first entry.",
                                 buttonTitle: "Add transaction"
                             ) { showAddTransaction = true }
-                                .padding()
+                                .padding(.horizontal, FinoraMetric.screenPadding)
                                 .padding(.top, 55)
                         }
+                        .scrollIndicators(.hidden)
+                   
                     } else {
                         List {
                             ForEach(groupedByDay) { group in
@@ -91,12 +95,11 @@ struct TransactionsListView: View {
                         .scrollIndicators(.hidden)
                         .listStyle(.plain)
                         .scrollContentBackground(.hidden)
-                        .tabBarSafeArea()
                     }
                 }
+                .tabBarSafeArea()
             }
             .background(FinoraColor.background)
-            .searchable(text: $searchText, prompt: "Search transactions")
             .navigationTitle("Transactions")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -114,6 +117,9 @@ struct TransactionsListView: View {
                 AddTransactionView(editingTransaction: transaction)
             }
             .sheet(isPresented: $showAddTransaction) { AddTransactionView() }
+            
+            
+            
         }
     }
 

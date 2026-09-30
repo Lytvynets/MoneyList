@@ -1,5 +1,4 @@
 
-
 import SwiftUI
 import UIKit
 
@@ -25,7 +24,7 @@ enum FinoraColor {
     static let surface2 = Color(hex: "051613")
     static let surfaceElevated = Color(hex: "1B3A30")
 
-    static let verdant = Color(hex: "386B4A")  
+    static let verdant = Color(hex: "386B4A")
     static let brassGold = Color(hex: "DDBA4C")
     static let coral = Color(hex: "E8735F")
     static let slate = Color(hex: "6E8CA0")
@@ -143,6 +142,7 @@ struct CardBackground: ViewModifier {
     func body(content: Content) -> some View {
         let base = elevated ? FinoraColor.surfaceElevated : FinoraColor.surface
         content
+            .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 LinearGradient(
                     colors: [base, base.opacity(0.88)],
